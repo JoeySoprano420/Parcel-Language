@@ -1,0 +1,323 @@
+# This workflow will upload a Python Package using Twine when a release is created
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python#publishing-to-package-registries
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Upload Python Package
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.x'
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install build
+    - name: Build package
+      run: python -m build
+    - name: Publish package
+      uses: pypa/gh-action-pypi-publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29
+      with:
+        user: __token__
+        password: ${{ secrets.PYPI_API_TOKEN }}
+            - name: Setup Java JDK
+  uses: actions/setup-java@v4.1.0
+  with:
+    # The Java version to set up. Takes a whole or semver Java version. See examples of supported syntax in README file
+    java-version: # optional
+    # The path to the `.java-version` file. See examples of supported syntax in README file
+    java-version-file: # optional
+    # Java distribution. See the list of supported distributions in README file
+    distribution: 
+    # The package type (jdk, jre, jdk+fx, jre+fx)
+    java-package: # optional, default is jdk
+    # The architecture of the package (defaults to the action runner's architecture)
+    architecture: # optional
+    # Path to where the compressed JDK is located
+    jdkFile: # optional
+    # Set this option if you want the action to check for the latest available version that satisfies the version spec
+    check-latest: # optional
+    # ID of the distributionManagement repository in the pom.xml file. Default is `github`
+    server-id: # optional, default is github
+    # Environment variable name for the username for authentication to the Apache Maven repository. Default is $GITHUB_ACTOR
+    server-username: # optional, default is GITHUB_ACTOR
+    # Environment variable name for password or token for authentication to the Apache Maven repository. Default is $GITHUB_TOKEN
+    server-password: # optional, default is GITHUB_TOKEN
+    # Path to where the settings.xml file will be written. Default is ~/.m2.
+    settings-path: # optional
+    # Overwrite the settings.xml file if it exists. Default is "true".
+    overwrite-settings: # optional, default is true
+    # GPG private key to import. Default is empty string.
+    gpg-private-key: # optional
+    # Environment variable name for the GPG private key passphrase. Default is $GPG_PASSPHRASE.
+    gpg-passphrase: # optional
+    # Name of the build platform to cache dependencies. It can be "maven", "gradle" or "sbt".
+    cache: # optional
+    # The path to a dependency file: pom.xml, build.gradle, build.sbt, etc. This option can be used with the `cache` option. If this option is omitted, the action searches for the dependency file in the entire repository. This option supports wildcards and a list of file names for caching multiple dependencies.
+    cache-dependency-path: # optional
+    # Workaround to pass job status to post job step. This variable is not intended for manual setting
+    job-status: # optional, default is ${{ job.status }}
+    # The token used to authenticate when fetching version manifests hosted on github.com, such as for the Microsoft Build of OpenJDK. When running this action on github.com, the default value is sufficient. When running on GHES, you can pass a personal access token for github.com if you are experiencing rate limiting.
+    token: # optional, default is ${{ github.server_url == 'https://github.com' && github.token || '' }}
+    # Name of Maven Toolchain ID if the default name of "${distribution}_${java-version}" is not wanted. See examples of supported syntax in Advanced Usage file
+    mvn-toolchain-id: # optional
+    # Name of Maven Toolchain Vendor if the default name of "${distribution}" is not wanted. See examples of supported syntax in Advanced Usage file
+    mvn-toolchain-vendor: # optional
+                      - name: Setup .NET Core SDK
+  uses: actions/setup-dotnet@v4.0.0
+  with:
+    # Optional SDK version(s) to use. If not provided, will install global.json version when available. Examples: 2.2.104, 3.1, 3.1.x, 3.x, 6.0.2xx
+    dotnet-version: # optional
+    # Optional quality of the build. The possible values are: daily, signed, validated, preview, ga.
+    dotnet-quality: # optional
+    # Optional global.json location, if your global.json isn't located in the root of the repo.
+    global-json-file: # optional
+    # Optional package source for which to set up authentication. Will consult any existing NuGet.config in the root of the repo and provide a temporary NuGet.config using the NUGET_AUTH_TOKEN environment variable as a ClearTextPassword
+    source-url: # optional
+    # Optional OWNER for using packages from GitHub Package Registry organizations/users other than the current repository's owner. Only used if a GPR URL is also provided in source-url
+    owner: # optional
+    # Optional NuGet.config location, if your NuGet.config isn't located in the root of the repo.
+    config-file: # optional
+    # Optional input to enable caching of the NuGet global-packages folder
+    cache: # optional
+    # Used to specify the path to a dependency file: packages.lock.json. Supports wildcards or a list of file names for caching multiple dependencies.
+    cache-dependency-path: # optional
+                      - name: Setup Go environment
+  uses: actions/setup-go@v5.0.0
+  with:
+    # The Go version to download (if necessary) and use. Supports semver spec and ranges. Be sure to enclose this option in single quotation marks.
+    go-version: # optional
+    # Path to the go.mod or go.work file.
+    go-version-file: # optional
+    # Set this option to true if you want the action to always check for the latest available version that satisfies the version spec
+    check-latest: # optional
+    # Used to pull Go distributions from go-versions. Since there's a default, this is typically not supplied by the user. When running this action on github.com, the default value is sufficient. When running on GHES, you can pass a personal access token for github.com if you are experiencing rate limiting.
+    token: # optional, default is ${{ github.server_url == 'https://github.com' && github.token || '' }}
+    # Used to specify whether caching is needed. Set to true, if you'd like to enable caching.
+    cache: # optional, default is true
+    # Used to specify the path to a dependency file - go.sum
+    cache-dependency-path: # optional
+    # Target architecture for Go to use. Examples: x86, x64. Will use system architecture by default.
+    architecture: # optional
+                      - name: Setup Node.js environment
+  uses: actions/setup-node@v4.0.2
+  with:
+    # Set always-auth in npmrc.
+    always-auth: # optional, default is false
+    # Version Spec of the version to use. Examples: 12.x, 10.15.1, >=10.15.0.
+    node-version: # optional
+    # File containing the version Spec of the version to use.  Examples: package.json, .nvmrc, .node-version, .tool-versions.
+    node-version-file: # optional
+    # Target architecture for Node to use. Examples: x86, x64. Will use system architecture by default.
+    architecture: # optional
+    # Set this option if you want the action to check for the latest available version that satisfies the version spec.
+    check-latest: # optional
+    # Optional registry to set up for auth. Will set the registry in a project level .npmrc and .yarnrc file, and set up auth to read in from env.NODE_AUTH_TOKEN.
+    registry-url: # optional
+    # Optional scope for authenticating against scoped registries. Will fall back to the repository owner when using the GitHub Packages registry (https://npm.pkg.github.com/).
+    scope: # optional
+    # Used to pull node distributions from node-versions. Since there's a default, this is typically not supplied by the user. When running this action on github.com, the default value is sufficient. When running on GHES, you can pass a personal access token for github.com if you are experiencing rate limiting.
+    token: # optional, default is ${{ github.server_url == 'https://github.com' && github.token || '' }}
+    # Used to specify a package manager for caching in the default directory. Supported values: npm, yarn, pnpm.
+    cache: # optional
+    # Used to specify the path to a dependency file: package-lock.json, yarn.lock, etc. Supports wildcards or a list of file names for caching multiple dependencies.
+    cache-dependency-path: # optional
+                      - name: Cache
+  uses: actions/cache@v4.0.1
+  with:
+    # A list of files, directories, and wildcard patterns to cache and restore
+    path: 
+    # An explicit key for restoring and saving the cache
+    key: 
+    # An ordered list of keys to use for restoring stale cache if no cache hit occurred for key. Note `cache-hit` returns false in this case.
+    restore-keys: # optional
+    # The chunk size used to split up large files during upload, in bytes
+    upload-chunk-size: # optional
+    # An optional boolean when enabled, allows windows runners to save or restore caches that can be restored or saved respectively on other platforms
+    enableCrossOsArchive: # optional, default is false
+    # Fail the workflow if cache entry is not found
+    fail-on-cache-miss: # optional, default is false
+    # Check if a cache entry exists for the given input(s) (key, restore-keys) without downloading the cache
+    lookup-only: # optional, default is false
+    # Run the post step to save the cache even if another step before fails
+    save-always: # optional, default is false
+                      - name: DesigniteJava
+  # You may pin to the exact commit or the version.
+  # uses: DesigniteTools/DJAction@5de0ca090d14125c6057ba4ec74563c1020ca372
+  uses: DesigniteTools/DJAction@v1.0.1
+  with:
+    # Personal access token
+    PAT: # optional, default is No PAT provided
+    # provide the QScored api
+    QSCORED_API_KEY: # optional, default is No qscore provided
+    # User name (email) for QScored
+    EMAIL: # optional, default is No username provided
+    # QScored project name
+    PRJ_NAME: # optional, default is ${{ github.event.repository.name }}
+    # is code quality results open-source? True/False
+    OPEN_SOURCE: # optional
+    # Designite license key - optional
+    D_KEY: # optional, default is No key
+                      - name: First interaction
+  uses: actions/first-interaction@v1.3.0
+  with:
+    # Token for the repository. Can be passed in using {{ secrets.GITHUB_TOKEN }}
+    repo-token: 
+    # Comment to post on an individual's first issue
+    issue-message: # optional
+    # Comment to post on an individual's first pull request
+    pr-message: # optional
+                      - name: SecureStack Secrets Analysis
+  # You may pin to the exact commit or the version.
+  # uses: SecureStackCo/actions-secrets@68f5dca939e2bf6b627449bd5c00f1bb423b01ca
+  uses: SecureStackCo/actions-secrets@v0.1.3
+  with:
+    # SecureStack API key - generate one at https://app.securestack.com
+    securestack_api_key: 
+    # SecureStack Application ID - available when viewing applications at https://app.securestack.com
+    securestack_app_id: 
+    # Severities lower than this input value will not be reported; value should be one of: critical | high | medium | low
+    severity: 
+    # Optional flags for the bloodhound-cli secrets command - run bloodhound-cli code --help for more details.
+    flags: # optional, default is 
+                 - name: Coverity json-output-v7 Report
+  # You may pin to the exact commit or the version.
+  # uses: synopsys-sig/coverity-report-output-v7-json@149d0dd6b162cbf5a70ec8ef2bf495dd17f1b2b7
+  uses: synopsys-sig/coverity-report-output-v7-json@v0.1.1
+  with:
+    # Your GitHub token
+    github-token: 
+    # The fully qualified path to your v7 Coverity JSON file, generated by the cov-format-errors command
+    json-file-path: 
+    # The URL of the Coverity Connect server to be referenced for REST API calls
+    coverity-url: # optional
+    # The name of this project within the Coverity Connect instance. This field is required to properly query issues from the server
+    coverity-project-name: # optional
+    # The username of the Coverity user whose account will access the Coverity Connect server. The user must have the "Access Web services" permission.
+    coverity-username: # optional
+    # The password associated with the Coverity username
+    coverity-password: # optional
+                           - name: Create NuGet Package for Octopus Deploy
+  # You may pin to the exact commit or the version.
+  # uses: OctopusDeploy/create-nuget-package-action@64e3cec8f57c50b3e7cdfabd006e4d1a24b94f4d
+  uses: OctopusDeploy/create-nuget-package-action@v3.0.2
+  with:
+    # Package Id.
+    package_id: 
+    # Package version.
+    version: 
+    # The folder to put the resulting package in, relative to the current working directory; not the base path.
+    output_folder: 
+    # The base path for the input files.
+    base_path: 
+    # Multi-line list of files to include in the package. Supports globbing.
+    files: 
+    # Description to include in the Nuspec file. 
+    nuspec_description: 
+    # Multi-line list of authors to include in the Nuspec file.
+    nuspec_authors: 
+    # Release notes to include in the Nuspec file.
+    nuspec_release_notes: # optional
+                      - name: Cleanup Redundant PRs and Branches from CD Automation
+  # You may pin to the exact commit or the version.
+  # uses: GlueOps/github-actions-cleanup-redundant-cd-prs@9c18b25705e8eda9e6b9dc6ac50de0a2a5fa4723
+  uses: GlueOps/github-actions-cleanup-redundant-cd-prs@v0.1.6
+  with:
+    # Pull Request Number
+    pr_number: 
+    # GitHub token for gh cli
+    gh_token: 
+    # The version of the gh cli to install
+    gh_cli_version: # optional, default is 2.42.0
+    # The version of jq to install
+    jq_version: # optional, default is 1.7.1
+                      - name: Shipa Cloud
+  # You may pin to the exact commit or the version.
+  # uses: shipa-corp/shipa-gh-action@4633febbc36b24abb54f10b848c4aaca8a5b5745
+  uses: shipa-corp/shipa-gh-action@0.0.2
+  with:
+    # File path to Shipa action yml file
+    shipa-action: 
+                      - name: Deploy Static Files to GCP Storage
+  # You may pin to the exact commit or the version.
+  # uses: bitovi/github-actions-gcp-bucket@b80cbadca19a68e2283caf5f9d85eaa4017f6362
+  uses: bitovi/github-actions-gcp-bucket@first-release
+  with:
+    # Specifies if this action should checkout the code
+    checkout: # optional, default is true
+    # GCP Storage bucket to use. Defaults to `${org}-${repo}-{branch}-bucket`
+    bucket_name: # optional
+    # The name of the file(s) to upload to the bucket. Wildcards supported. Duplicate Files will be overwritten.
+    file_name: 
+    # GCP Service Account Key JSON set as GOOGLE_CREDENTIALS secret.
+    gcp_access_key: 
+    # `.env` file to be used with the app from Github secrets
+    dot_env: # optional
+    # `.env` file to be used with the app from Github variables
+    ghv_env: # optional
+    # Set to 'true' to Destroy the bucket and all child files.
+    bucket_destroy: # optional, default is false
+                      - name: Honeycomb Buildevents
+  # You may pin to the exact commit or the version.
+  # uses: honeycombio/gha-buildevents@e891e91ad0fcd80b71430a97ebf5a9baecac388a
+  uses: honeycombio/gha-buildevents@v3.0.0
+  with:
+    # A Honeycomb API key - needed to send traces.
+    apikey: 
+    # Defaults to https://api.honeycomb.io
+    apihost: # optional, default is https://api.honeycomb.io
+    # The Honeycomb dataset to send traces to.
+    dataset: 
+    # Status of the job or worfklow. Setting this signals when to end the trace.
+    status: # optional
+    # Unix timestamp to represent when the trace started. Not necessary for single job workflows. Send in final use of the action for multi-job workflows.
+    trace-start: # optional
+    # Set this to a key unique for this matrix cell, only useful when using a build matrix.
+    matrix-key: # optional
+    # Deprecated value - please use status instead
+    job-status: # optional
+    # (true/false) Whether to send an event representing the setup of this action.
+    send-init-event: # optional, default is true
+                      - name: rss-to-issues
+  # You may pin to the exact commit or the version.
+  # uses: git-for-windows/rss-to-issues@44ef58301d5c8257c00e3ae0a233d9659a5e0f4f
+  uses: git-for-windows/rss-to-issues@v0.0.6
+  with:
+    # The GITHUB_TOKEN secret
+    github-token: 
+    # URL of the RSS/Atom feed
+    feed: 
+    # Only look at feed items younger than this
+    max-age: 
+    # Prefix added to the created issues' titles
+    prefix: # optional
+    # Labels to add, comma separated
+    labels: # optional
+    # Log issue creation but do nothing
+    dry-run: # optional
+    # Aggregate all items in a single issue
+    aggregate: # optional
+    # Limit the issue contents' size
+    character-limit: # optional
+    # Limit to feed items whose titles match this regular expression
+    title-pattern: # optional
+    # Limit to feed items whose contents match this regular expression
+    content-pattern: # optional
+          

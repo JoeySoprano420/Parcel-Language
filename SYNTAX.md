@@ -93,3 +93,91 @@ fun main() {
 ```
 
 This is a high-level conceptual design, and the actual implementation would require detailed specification, testing, and refinement. Feel free to iterate on this design based on your specific needs and preferences.
+
+In Parcel-Lang, let's define some primitive types similar to C types. We'll call them "P types" for Parcel types. Here's an example:
+
+```plaintext
+# Parcel-Lang with P Types
+
+# P Types
+type PInt = Int
+type PFloat = Float
+type PChar = Char
+type PBool = Bool
+type PString = String
+
+# Variable Declaration
+let number: PInt = 42
+let pi: PFloat = 3.14
+let letter: PChar = 'A'
+let isTrue: PBool = true
+let message: PString = "Hello, Parcel!"
+
+# Function Declaration
+fun add(x: PInt, y: PInt) -> PInt {
+    return x + y
+}
+
+# ... (rest of the syntax)
+```
+
+In this example, we've introduced P types such as `PInt` for integers, `PFloat` for floating-point numbers, `PChar` for characters, `PBool` for booleans, and `PString` for strings. These types can be used to declare variables and define functions with specific data types.
+
+Let's continue to enhance Parcel-Lang with more advanced features and data structures:
+
+```plaintext
+# Parcel-Lang with Advanced Features
+
+# P Types
+type PInt = Int
+type PFloat = Float
+type PChar = Char
+type PBool = Bool
+type PString = String
+
+# Lists
+type PList<T> = List<T>
+
+# Variable Declaration
+let number: PInt = 42
+let pi: PFloat = 3.14
+let letter: PChar = 'A'
+let isTrue: PBool = true
+let message: PString = "Hello, Parcel!"
+
+# Function Declaration
+fun add(x: PInt, y: PInt) -> PInt {
+    return x + y
+}
+
+# Advanced Features
+trait Printable {
+    fun print()
+}
+
+struct Book: Printable {
+    let title: PString
+    let author: PString
+    
+    fun print() {
+        print("Book: \(title) by \(author)")
+    }
+}
+
+# Lists of Books
+let books: PList<Book> = [
+    Book("The Catcher in the Rye", "J.D. Salinger"),
+    Book("To Kill a Mockingbird", "Harper Lee"),
+    Book("1984", "George Orwell")
+]
+
+# Print all books
+[book.print() for book in books]
+
+# ... (rest of the syntax)
+```
+
+Here, we've introduced the concept of generic types (`PList<T>`) to represent lists of various types, and a `trait` (similar to an interface in other languages) called `Printable` that defines a `print` method. Additionally, a `struct` called `Book` implements the `Printable` trait, showcasing the use of structures and traits.
+
+This extended Parcel-Lang supports lists of books and demonstrates the flexibility to define custom data structures and behaviors.
+
